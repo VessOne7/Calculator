@@ -14,7 +14,7 @@ function divide(num1, num2){
 
 //variables for operator, 2 numbers and value
 let operator;
-let num1;
+let num1 = ``;
 let num2;
 let displayValue = operate()
 
@@ -22,7 +22,7 @@ let displayValue = operate()
 function operate(){
     switch(operator){
         case '+': return add(num1, num2);
-        case '-': return    subtract(num1, num2);
+        case '-': return subtract(num1, num2);
         case '*': return multiply(num1, num2);
         case '/': return divide(num1, num2);
     }
@@ -30,21 +30,14 @@ function operate(){
 
 //Selectors for html elements
 const displayVar = document.querySelector('.display');
+displayVar.textContent = ``;
 const button = document.querySelectorAll('button');
+button.forEach(item => {
+    item.addEventListener('click', display(item))
+})
+
 
 //Function for populating display with pressed numbers
-function display(){    
-    displayVar.textContent = `${num1} ${operator} ${num2} = ${displayValue}`;
+function display(item){
+    displayVar.textContent = `${item.textContent}`;
 }
-
-//function for resetting display
-function reset() {
-    if (num1 != undefined && num2 != undefined && operator != undefined) {
-        num1 = `${button.textContent}`;
-        num2 = undefined;
-        operator = undefined;
-    }
-}
-
-//Events for pressing buttons
-button.forEach(item => item.addEventListener("click", reset()))
