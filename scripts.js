@@ -21,6 +21,7 @@ let operator = "";
 let num1 = "";
 let num2 = "";
 let displayValue = 0;
+let operatorIndex;
 
 //function to take operator and 2 numbers and call the right function
 function operate(){
@@ -62,22 +63,32 @@ function btnEvent(val, op){
     function displayOperator(){
         const conditions = ["+", "-", "*", "/"]
         if (conditions.some(item => displayDiv.textContent.split("").includes(item))) {
+            Eval();
+            displayDiv.innerHTML = `${operate()} ${op} `
         } else {displayDiv.innerHTML += ` ${op} `}
     }
 
     //Clear, 0-9, . event
     button.forEach(item => {
+
+        //Clear event
         if (item.textContent == "Clear"){
-            item.addEventListener("click", () => displayDiv.textContent = "");
-            num1 = "";
-            num2 = "";
-            operator = "";
-        } else if (Number(item.textContent) >= 0 && Number(item.textContent) <= 9){
+            item.addEventListener("click", () => {
+                displayDiv.textContent = "";
+                num1 = "";
+                num2 = "";
+                operator = "";
+            });
+        } 
+
+        //Number event
+        else if (Number(item.textContent) >= 0 && Number(item.textContent) <= 9){
             item.addEventListener("click", () => {
                 val = `${item.textContent}`;
                 display();
             })             
         } 
+        
         // DOT (.) event
         else if (item.textContent == ".") {
             item.addEventListener("click", () => {
@@ -104,21 +115,49 @@ function btnEvent(val, op){
     const btnOperator = document.querySelectorAll(".operator")
     btnOperator.forEach(item => {item.addEventListener("click", () => {  
           op = `${item.textContent}`;
+          const conditions = ["+", "-", "*", "/"]
+          if (conditions.some(item => displayDiv.textContent.split("").includes(item))) {
+            item.addEventListener("click", () => {
+                Eval()
+                displayDiv.innerHTML = `${operate()}`
+            })
+        }
           displayOperator();      
         })
     })
+
+    //function for finding operator index
+    function findOperatorIndex() {
+        let displayArray = displayDiv.textContent.split("")
+        const conditions = ["+", "-", "*", "/"]
+        for (let i = 0; i < conditions.length; i++){
+            if (displayArray.includes(conditions[i])) {
+                operatorIndex = displayArray.indexOf(conditions[i]);
+            }
+        }
+    }
 
     //evaluation event
     const btnEvaluation = document.querySelector(".evaluation")
     btnEvaluation.addEventListener("click", () => {
         let displayArray = displayDiv.textContent.split("")
-        if (displayArray.includes("=")) {} else {
-            let operatorIndex = displayArray.indexOf(`${op}`)
-            num1 = Number(displayArray.splice(0, operatorIndex).join(""))
-            num2 = Number(displayArray.splice(1, displayArray.length).join(""))
-            operator = displayArray.toString();
+        findOperatorIndex();
+        if ((displayArray.includes("=")) 
+            || (displayArray.length - operatorIndex <= 2) 
+            || (displayDiv.textContent == "")
+            || (operatorIndex == undefined)) {} 
+        else {
+            Eval();
             displayDiv.innerHTML += ` = ${operate()}`
         } 
     })
 
+    //evaluation function
+    function Eval(){
+        let displayArray = displayDiv.textContent.split("")
+        findOperatorIndex();
+        num1 = Number(displayArray.splice(0, operatorIndex).join(""))
+        num2 = Number(displayArray.splice(1, displayArray.length).join(""))
+        operator = displayArray.toString();
+    }
 }
