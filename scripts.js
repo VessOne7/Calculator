@@ -13,28 +13,28 @@ const calcDisplay = document.querySelector(".display");
 
 //add, subtract, multiply and divide functions
 function add(){
-    return Number(number1) + Number(number2);
+    return parseFloat((Number(number1) + Number(number2)).toFixed(2));
 }
 
 function subtract(){
-    return Number(number1) - Number(number2);
+    return parseFloat((Number(number1) - Number(number2)).toFixed(2));
 }
 
 function multiply(){
-    return Number(number1) * Number(number2);
+    return parseFloat((Number(number1) * Number(number2)).toFixed(2));
 }
 
 function divide(){
-    return Number(number1) / Number(number2);
+    return parseFloat((Number(number1) / Number(number2)).toFixed(2));
 }
 
 //calculation function
 function operate(){
     switch (operator){
         case "+": displayValue = add(); break;
-        case "-": displayValue = subtract(number1, number2); break;
-        case "*": displayValue = multiply(number1, number2); break;
-        case "/": displayValue = divide(number1, number2); break;
+        case "-": displayValue = subtract(); break;
+        case "*": displayValue = multiply(); break;
+        case "/": displayValue = divide(); break;
     }
 }
 
@@ -63,15 +63,40 @@ btn.forEach(item => {
             
         case "operator":
             item.addEventListener("click", () => {
-                operator = item.textContent;
-                displayValue = `${number1} ${operator} ${number2}`;
-                calcDisplay.textContent = `${displayValue}`;
+                switch(operator == undefined) {
+                    case true: 
+                        if (displayValue != undefined){
+                            operator = item.textContent;
+                            displayValue = `${number1} ${operator} ${number2}`;
+                            calcDisplay.textContent = `${displayValue}`;
+                        }
+                        break;                            
+                    case false:
+                        operate();
+                        operator = item.textContent;
+                        calcDisplay.textContent = `${displayValue} ${operator}`;
+                        number1 = `${displayValue}`;                        
+                        number2 = "";
+                        break;
+                }
             }); break; 
 
         case "equals":
             item.addEventListener("click", () => {
                 operate();
-                if (displayValue != undefined) {calcDisplay.textContent = `${displayValue}`}
+                if (number2 == "0" && operator == "/") {
+                    calcDisplay.textContent = "What are you doing!? You can't divide by zero! Fool!";
+                    number1 = "";
+                    number2 = "";
+                    operator = undefined;
+                    value = undefined;
+                    displayValue = undefined;
+                } else if (displayValue != undefined) {
+                    calcDisplay.textContent = `${displayValue}`;
+                    number1 = `${displayValue}`;
+                    operator = undefined;
+                    number2 = "";
+                }
             }); break;
 
         case "clear":
