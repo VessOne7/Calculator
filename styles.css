@@ -1,45 +1,44 @@
-body{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.buttons{
-    display: flex;
-    justify-content: center;
-    width: 50vh;
-    height: 50vh;
-    flex: 0;
-}
-
-.operators{
+.calculator{
+    margin: auto;
+    height: 500px;
+    width: 500px;
     display: flex;
     flex-direction: column;
 }
 
-.divNumber{
+.bottom{
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-start;
-    width: 9em;
-    justify-content: end;
-    align-content: flex-start;
+    flex: 0 0 75%;
 }
 
-button{
-    width: 40px;
-    height: 40px;
+.bottom > button {
+    flex: 0 0 25%;
 }
 
-.clear{
-    text-align: center;
-    font-size:10px;
+#zero{
+    flex: 0 0 50%;
+}
+
+.top{
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 25%;
+}
+
+.topButtons{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 25%;
+}
+
+.topButtons > * {
+    flex: 0 0 50%;
 }
 
 .display{
-    height: 40px;
-    width: 160px;
-    border: 2px black;
+    box-sizing: border-box;
+    border-style: inset;
+    text-align: center;
+    flex: 0 0 75%;
 }
